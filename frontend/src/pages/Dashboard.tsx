@@ -479,101 +479,63 @@ return (
 
         <Divider />
 
-        {/* Segment selection + details */}
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "column",
-            }}
-        >
-            {/* Selection */}
-            <Box
-                sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent:
-                        "space-between",
-                    px: 2,
-                    py: 1,
-                }}
-            > 
-            <ButtonGroup size="small">
-                    <Button
-                        onClick={
-                            selectPreviousSegment
-                        }
-                        disabled={
-                            selectedIndex <= 0
-                        }
-                    >
-                        ◀ Previous
-                    </Button>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <Divider />
 
-                    <Button
-                        onClick={selectNextSegment}
-                        disabled={
-                            selectedIndex < 0 ||
-                            selectedIndex >=
-                                orderedSegmentIds.length -
-                                    1
-                        }
-                    >
-                        Next ▶
-                    </Button>
-                </ButtonGroup>
-                    <Typography
-                        variant="subtitle1"
-                        sx={{ fontWeight: 600 }}
-                    >
+    <Box sx={{ display: "flex", alignItems: "stretch" }}>
+        {/* Left Column: Segment Details & Navigation */}
+        <Box sx={{ flex: 1.25, px: 2, py: 1.5, pr: 3 }}>
+            
+            {/* Unified Panel Header */}
+            <Stack 
+                direction="row" 
+                alignItems="center" 
+                justifyContent="space-between" 
+                sx={{ mb: 2 }}
+            >
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    Selected Segment
+                </Typography>
+
+                <Stack direction="row" spacing={2} alignItems="center">
+                    <Typography variant="body2" color="text.secondary">
                         {selectedIndex >= 0
                             ? `Segment ${selectedIndex + 1} of ${orderedSegmentIds.length}`
                             : "No segment selected"}
                     </Typography>
 
-               
-            </Box>
+                    <ButtonGroup size="small">
+                        <Button
+                            onClick={selectPreviousSegment}
+                            disabled={selectedIndex <= 0}
+                        >
+                            ◀ Prev
+                        </Button>
+                        <Button
+                            onClick={selectNextSegment}
+                            disabled={
+                                selectedIndex < 0 ||
+                                selectedIndex >= orderedSegmentIds.length - 1
+                            }
+                        >
+                            Next ▶
+                        </Button>
+                    </ButtonGroup>
+                </Stack>
+            </Stack>
 
-            <Divider />
-
-            {/* Details */}
-            <Box
-                sx={{
-                    display: "flex",
-                    alignItems: "stretch",
-                }}
-            >
-                <Box
-                    sx={{
-                        flex: 1.25,
-                        px: 2,
-                        py: 1.5,
-                        pr: 3,
-                    }}
-                >
-                    <SegmentDetails
-                        segment={selectedSegment}
-                    />
-                </Box>
-
-                <Divider
-                    orientation="vertical"
-                    flexItem
-                />
-
-                <Box
-                    sx={{
-                        flex: 1,
-                        px: 2,
-                        py: 1.5,
-                        pl: 3,
-                    }}
-                >
-                    <ProductivityStatistics
-                        statistics={statistics}
-                    />
-                </Box>
-            </Box>
+            {/* Component Details */}
+            <SegmentDetails segment={selectedSegment} />
         </Box>
+
+        <Divider orientation="vertical" flexItem />
+
+        {/* Right Column: Statistics */}
+        <Box sx={{ flex: 1, px: 2, py: 1.5, pl: 3 }}>
+            <ProductivityStatistics statistics={statistics} />
+        </Box>
+    </Box>
+</Box>
 
     </Stack>
 </Panels.Item>

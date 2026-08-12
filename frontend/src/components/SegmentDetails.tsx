@@ -69,15 +69,7 @@ export default function SegmentDetails({
 
     return (
         <Box>
-            <Typography
-                variant="subtitle1"
-                sx={{
-                    fontWeight: 600,
-                    mb: 1.5,
-                }}
-            >
-                Selected Segment
-            </Typography>
+
 
             <Typography
                 variant="body2"
