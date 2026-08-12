@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Divider, MenuItem, Stack, TextField } from '@mui/material';
+import { Box, Button, Divider, MenuItem, Stack, TextField } from '@mui/material';
 
 import { Typography } from '@andritzot/metris-web-ui/data-display/typography';
 
@@ -41,17 +41,6 @@ export default function FiltersPanel() {
                         </MenuItem>
                     ))}
                 </TextField>
-            </Stack>
-
-            <Divider />
-
-            <Stack spacing={1.5}>
-                <Typography variant="subtitle2">Working set</Typography>
-                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                    <Chip label="Historical data" size="small" />
-                    <Chip label="Mock backend" size="small" variant="outlined" />
-                    <Chip label="Report ready" size="small" variant="outlined" />
-                </Box>
             </Stack>
 
             <Divider />

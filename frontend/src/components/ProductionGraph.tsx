@@ -6,10 +6,12 @@ import type { ProductionSegment, } from "../types/Production";
 const AXIS_COLOR = 'var(--metris-gray-400)';
 const SEGMENT_COLOR = 'var(--metris-gray-50)';
 const SELECTED_SEGMENT_COLOR = 'var(--metris-blue-1000)';
+const SAME_PRODID_COLOR = 'var(--metris-blue-300)';
 
 export interface BarChartProps {
   readonly data: ProductionSegment[];
   readonly selectedSegmentId: string | null;
+  readonly selectedProductionId: string | null;
   readonly displayedMonth: number;
   readonly displayedYear: number;
   readonly yLabel?: string;
@@ -24,6 +26,7 @@ export interface BarChartProps {
 export default function BarChart({
   data,
   selectedSegmentId,
+  selectedProductionId,
   displayedMonth,
   displayedYear,
   yLabel,
@@ -77,13 +80,21 @@ function createSeries(
 
     segment: ProductionSegment,
 
-    selectedSegmentId: string | null
+    selectedSegmentId: string | null,
 
 ) {
 
     const day = segment.startTime.getDate();
 
     const values = Array(daysInMonth).fill(null);
+
+    const isSelected =
+    segment.segmentId === selectedSegmentId;
+
+    const isSameProduction =
+        segment.prodId === selectedProductionId;
+        
+    
     values[day - 1] = segment.massTotal;
 
     return {
@@ -94,10 +105,11 @@ function createSeries(
 
         data: values,
 
-        color:
-            segment.segmentId === selectedSegmentId
-                ? SELECTED_SEGMENT_COLOR
-                : SEGMENT_COLOR,
+        color: isSelected
+            ? SELECTED_SEGMENT_COLOR
+            : isSameProduction
+                ? SAME_PRODID_COLOR
+                : SEGMENT_COLOR
 
     };
 

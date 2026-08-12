@@ -181,6 +181,12 @@ export default function Dashboard() {
                 selectedSegment?.prodId,
         ) ?? null;
 
+    const selectedProductionId =
+    segments.find(
+        segment =>
+            segment.segmentId === selectedSegmentId,
+    )?.prodId ?? null;
+
 
     // --------------------------------------------------
     // Statistics
@@ -402,9 +408,11 @@ if (!productionMonth && loading) {
                         <ProductionGraph
     data={segments}
     selectedSegmentId={selectedSegmentId}
+    selectedProductionId={selectedProductionId}
     displayedMonth = {displayedMonth}
     displayedYear={displayedYear}
     loading={loading}
+    
 />
                         <SegmentDetails
                             segment={selectedSegment}
