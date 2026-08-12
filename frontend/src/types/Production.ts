@@ -44,10 +44,43 @@ export interface ProductionSegment {
 }
 
 export interface ProductionUnit {
-    readonly prodId: string;
-    readonly prodNum: string;
-    readonly prodDesc: string;
-    readonly recipeName: string;
+    prodId: string;
+    prodNum: string;
+    prodDesc: string;
+    recipeName: string;
+    statistics: ProductionUnitStatistics;
+}
+
+export interface ProductionUnitStatistics {
+    segmentCount: number;
+    runTime: number;
+    hours: number;
+    mass: number;
+    rate: number;
+    totalInclAdditives: number;
+
+    additives: {
+        add1: {
+            mass: number;
+            percent: number;
+        };
+        add2: {
+            mass: number;
+            percent: number;
+        };
+        add3: {
+            mass: number;
+            percent: number;
+        };
+        add4: {
+            mass: number;
+            percent: number;
+        };
+        add5: {
+            mass: number;
+            percent: number;
+        };
+    };
 }
 
 export interface ReportAction {

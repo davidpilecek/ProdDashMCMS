@@ -1,6 +1,10 @@
 import csv
 from pathlib import Path
 
+from services.statistics_service import (
+    calculate_production_unit_statistics,
+)
+
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
@@ -9,8 +13,6 @@ def _get_filename(month: int, year: int, suffix: str) -> Path:
     month_string = f"{month:02d}"
     return DATA_DIR / f"{month_string}{year}_{suffix}.csv"
 
-
-
 def _parse_production_unit(row: dict) -> dict:
     return {
         "prodId": row["PROD_ID"],
@@ -18,8 +20,6 @@ def _parse_production_unit(row: dict) -> dict:
         "prodDesc": row["PROD_DESC"],
         "recipeName": row["RECIPE_NAME"],
     }
-
-
 
 def _parse_segment(row: dict) -> dict:
     return {
@@ -48,8 +48,6 @@ def _parse_segment(row: dict) -> dict:
         "add4Percent": float(row["ADD4_PERCENT"]),
         "add5Percent": float(row["ADD5_PERCENT"]),
     }
-
-
 
 def load_segments(month: int, year: int) -> list[dict]:
 
@@ -107,12 +105,25 @@ def load_production_month(
     year: int,
 ) -> dict:
 
+    segments = load_segments(month, year)
+
+    production_units = load_production_units(
+        month,
+        year,
+    )
+
+    for production_unit in production_units:
+
+        production_unit["statistics"] = (
+            calculate_production_unit_statistics(
+                segments,
+                production_unit["prodId"],
+            )
+        )
+
     return {
         "month": month,
         "year": year,
-        "segments": load_segments(month, year),
-        "productionUnits": load_production_units(
-            month,
-            year,
-        ),
+        "segments": segments,
+        "productionUnits": production_units,
     }

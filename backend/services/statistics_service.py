@@ -1,6 +1,5 @@
 from datetime import datetime
 
-
 def _build_stats(segments: list[dict]) -> dict:
     if not segments:
         return {
@@ -24,7 +23,6 @@ def _build_stats(segments: list[dict]) -> dict:
         "hours": hours,
         "rate": tonnes / hours if hours > 0 else 0.0,
     }
-
 
 def calculate_production_statistics(
     segments: list[dict],
@@ -85,3 +83,75 @@ def calculate_production_statistics(
             month_segments
         ),
     }
+
+
+def calculate_production_unit_statistics(
+    segments: list[dict],
+    prod_id: str,
+) -> dict:
+    unit_segments = [
+    segment
+    for segment in segments
+    if segment["prodId"] == prod_id
+]
+    if not unit_segments:
+        raise ValueError(
+            f"Production unit not found: {prod_id}"
+        )
+
+    mass = sum(
+    float(segment["massTotal"])
+    for segment in unit_segments
+    )
+
+    runtime = sum(
+        float(segment["runTime"])
+        for segment in unit_segments
+    )
+
+    total_incl_additives = sum(
+        float(segment["totalInclAdditives"])
+        for segment in unit_segments
+    )
+
+    hours = runtime / 3600
+
+    rate = (
+        mass / hours
+        if hours > 0
+        else 0.0
+    )
+
+    additives = {}
+
+    for index in range(1, 6):
+
+        key = f"add{index}Total"
+
+        total = sum(
+            float(segment[key])
+            for segment in unit_segments
+        )
+
+        additives[f"add{index}"] = {
+            "mass": total,
+            "percent": (
+                total / total_incl_additives * 100
+                if total_incl_additives > 0
+                else 0.0
+            ),
+        }
+    return {
+    "segmentCount": len(unit_segments),
+
+    "runTime": runtime,
+    "hours": hours,
+
+    "mass": mass,
+    "rate": rate,
+
+    "totalInclAdditives": total_incl_additives,
+
+    "additives": additives,
+    }
+

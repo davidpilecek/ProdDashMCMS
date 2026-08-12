@@ -1,7 +1,6 @@
 import type {
 	DashboardMonth,
 	OverviewMetric,
-	ProductionUnit,
 	ProductionGraphPoint,
 	ReportAction,
 } from '../types/Production';
@@ -57,21 +56,6 @@ export const productionGraphPoints: ProductionGraphPoint[] = [
 	{ label: 'W10', actual: 90, target: 88 },
 	{ label: 'W11', actual: 94, target: 88 },
 	{ label: 'W12', actual: 97, target: 88 },
-];
-
-export const productionUnits: ProductionUnit[] = [
-	{
-		prodId: 'U-1001',
-		prodNum: 'Production Line 1',
-		prodDesc: 'Plant A',
-		recipeName: 'Active',
-	},
-	{
-		prodId: 'U-1002',
-		prodNum: 'Production Line 2',
-		prodDesc: 'Plant A',
-		recipeName: 'Active',
-	},
 ];
 
 

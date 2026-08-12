@@ -1,5 +1,6 @@
 import {
     Box,
+    Divider,
     MenuItem,
     Stack,
     TextField,
@@ -13,7 +14,6 @@ import { ButtonGroup} from '@andritzot/metris-web-ui/inputs/button-group';
 import { Typography } from '@andritzot/metris-web-ui/data-display/typography';
 import { Panels } from '@andritzot/metris-web-ui/layout/panels';
 
-import FiltersPanel from '../components/FiltersPanel';
 import ProductionGraph from '../components/ProductionGraph';
 import SegmentDetails from "../components/SegmentDetails";
 import ProductionUnitDetails from "../components/ProductionUnitDetails";
@@ -322,121 +322,269 @@ if (!productionMonth && loading) {
     // UI
     // --------------------------------------------------
 
-    return (
-        <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
+return (
+    <Box sx={{ p: 1.5 }}>
+
+        {/* Toolbar */}
+        <Box
+            sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                mb: 2,
+            }}
+        >
+            {/* Month / Year */}
             <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
+                sx={{py:2,
+                    display: "flex",
+                    alignItems: "center",
                     gap: 2,
-                    flexWrap: 'wrap',
-                    p: 3,
-                    borderRadius: 3,
-                    bgcolor: 'background.paper',
-                    boxShadow: '0 1px 5px rgba(0, 0, 0, 0.05), 0 2px 5px rgba(0, 0, 0, 0.05)',
                 }}
             >
-                <Box>
-                    <Typography variant="h5">Production Dashboard</Typography>
-                </Box>
-
-                <Box
-                        sx={{
-                            display: "flex",
-                            gap: 1.5,
-                            flexWrap: "wrap",
-                            alignItems: "center",
-                        }}
-                    >
-                        <TextField
-                            select
-                            size="small"
-                            label="Month"
-                            value={displayedMonth}
-                            onChange={(event) => {
-                                setDisplayedMonth(
-                                    Number(event.target.value),
-                                );
-                            }}
-                            sx={{ minWidth: 150 }}
+                <TextField
+                    select
+                    size="small"
+                    label="Month"
+                    value={displayedMonth}
+                    onChange={(event) => {
+                        setDisplayedMonth(
+                            Number(event.target.value),
+                        );
+                    }}
+                    sx={{ minWidth: 150 }}
+                >
+                    {months.map((month) => (
+                        <MenuItem
+                            key={month.value}
+                            value={month.value}
                         >
-                            {months.map((month) => (
-                                <MenuItem
-                                    key={month.value}
-                                    value={month.value}
-                                >
-                                    {month.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                            {month.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
 
-                        <TextField
-                            select
-                            size="small"
-                            label="Year"
-                            value={displayedYear}
-                            onChange={(event) => {
-                                setDisplayedYear(
-                                    Number(event.target.value),
-                                );
-                            }}
-                            sx={{ minWidth: 120 }}
+                <TextField
+                    select
+                    size="small"
+                    label="Year"
+                    value={displayedYear}
+                    onChange={(event) => {
+                        setDisplayedYear(
+                            Number(event.target.value),
+                        );
+                    }}
+                    sx={{ minWidth: 120 }}
+                >
+                    {years.map((year) => (
+                        <MenuItem
+                            key={year}
+                            value={year}
                         >
-                            {years.map((year) => (
-                                <MenuItem
-                                    key={year}
-                                    value={year}
-                                >
-                                    {year}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Box>
+                            {year}
+                        </MenuItem>
+                    ))}
+                </TextField>
             </Box>
 
+            {/* Reports */}
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                }}
+            >
+                <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={function A(){}}
+                >
+                    PDF Report
+                </Button>
+
+                <Button
+                    variant="contained"
+                    size="small"
+                    onClick={function A(){}}
+                >
+                    CSV Report
+                </Button>
+            </Box>
+        </Box>
+
             <Panels.Group orientation="horizontal" autoSaveId="production-dashboard-layout">
-                <Panels.Item defaultSize="24%" minSize="18%" surface>
-                    <FiltersPanel />
-                </Panels.Item>
+
+<Panels.Item
+    defaultSize="70%"
+    minSize="55%"
+    surface
+>
+    <Stack
+        spacing={0}
+        sx={{ height: "100%" }}
+    >
+
+        {/* Production Overview heading */}
+        <Box
+            sx={{
+                px: 2,
+                pt: 2,
+                pb: 1,
+            }}
+        >
+            <Stack
+                direction="row"
+                alignItems="baseline"
+                justifyContent="space-between"
+            >
+                <Typography variant="h6">
+                    Production Overview
+                </Typography>
+
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                >
+                    {months.find(
+                        month =>
+                            month.value ===
+                            displayedMonth
+                    )?.label}{" "}
+                    {displayedYear}
+                </Typography>
+            </Stack>
+        </Box>
+
+        {/* Graph */}
+        <Box
+            sx={{
+                px: 1.5,
+                pb: 1,
+            }}
+        >
+            <ProductionGraph
+                data={segments}
+                selectedSegmentId={
+                    selectedSegmentId
+                }
+                selectedProductionId={
+                    selectedProductionId
+                }
+                displayedMonth={displayedMonth}
+                displayedYear={displayedYear}
+                loading={loading}
+            />
+        </Box>
+
+        <Divider />
+
+        {/* Segment selection + details */}
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
+            {/* Selection */}
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent:
+                        "space-between",
+                    px: 2,
+                    py: 1,
+                }}
+            > 
+            <ButtonGroup size="small">
+                    <Button
+                        onClick={
+                            selectPreviousSegment
+                        }
+                        disabled={
+                            selectedIndex <= 0
+                        }
+                    >
+                        ◀ Previous
+                    </Button>
+
+                    <Button
+                        onClick={selectNextSegment}
+                        disabled={
+                            selectedIndex < 0 ||
+                            selectedIndex >=
+                                orderedSegmentIds.length -
+                                    1
+                        }
+                    >
+                        Next ▶
+                    </Button>
+                </ButtonGroup>
+                    <Typography
+                        variant="subtitle1"
+                        sx={{ fontWeight: 600 }}
+                    >
+                        {selectedIndex >= 0
+                            ? `Segment ${selectedIndex + 1} of ${orderedSegmentIds.length}`
+                            : "No segment selected"}
+                    </Typography>
+
+               
+            </Box>
+
+            <Divider />
+
+            {/* Details */}
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "stretch",
+                }}
+            >
+                <Box
+                    sx={{
+                        flex: 1.25,
+                        px: 2,
+                        py: 1.5,
+                        pr: 3,
+                    }}
+                >
+                    <SegmentDetails
+                        segment={selectedSegment}
+                    />
+                </Box>
+
+                <Divider
+                    orientation="vertical"
+                    flexItem
+                />
+
+                <Box
+                    sx={{
+                        flex: 1,
+                        px: 2,
+                        py: 1.5,
+                        pl: 3,
+                    }}
+                >
+                    <ProductivityStatistics
+                        statistics={statistics}
+                    />
+                </Box>
+            </Box>
+        </Box>
+
+    </Stack>
+</Panels.Item>
 
                 <Panels.Separator />
 
-                <Panels.Item defaultSize="46%" minSize="34%" surface>
-                    <Stack spacing={3} sx={{ height: '100%' }}>
-                        
-                        <ProductionGraph
-    data={segments}
-    selectedSegmentId={selectedSegmentId}
-    selectedProductionId={selectedProductionId}
-    displayedMonth = {displayedMonth}
-    displayedYear={displayedYear}
-    loading={loading}
-    
-/>
-                        <SegmentDetails
-                            segment={selectedSegment}
-                        />
-
-                    </Stack>
-                </Panels.Item>
-
-                <Panels.Separator />
-
-                <Panels.Item defaultSize="30%" minSize="24%" surface>
-                    <Stack spacing={3} sx={{ height: '100%' }}>
-                        <ButtonGroup size="small">
-                        <Button onClick={selectPreviousSegment}>
-                            ◀ Previous
-                        </Button>
-                        <Button onClick={selectNextSegment}>
-                            Next ▶
-                        </Button>
-
-                        </ButtonGroup>
-                        <ProductivityStatistics
-                            statistics={statistics}
-                        />
+                <Panels.Item defaultSize="30%" minSize="25%" surface>
+                    <Stack
+                        spacing={0}
+                        sx={{ height: "100%" }}
+                    >
                     
                         <ProductionUnitDetails
                             productionUnit={selectedProductionUnit}

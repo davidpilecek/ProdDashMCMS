@@ -1,3 +1,7 @@
+import { Box, Divider } from "@mui/material";
+
+import { Typography } from "@andritzot/metris-web-ui/data-display/typography";
+
 import type { ProductionStatistics } from "../types/Production";
 
 interface ProductivityStatisticsProps {
@@ -8,47 +12,142 @@ export default function ProductivityStatistics({
     statistics,
 }: ProductivityStatisticsProps) {
     if (!statistics) {
-        return null;
+        return (
+            <Box>
+                <Typography
+                    variant="subtitle1"
+                    sx={{ fontWeight: 600, mb: 1.5 }}
+                >
+                    Statistics
+                </Typography>
+
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                >
+                    No statistics available.
+                </Typography>
+            </Box>
+        );
     }
 
+    const rows = [
+        {
+            label: "Segment",
+            ...statistics.segment,
+        },
+        {
+            label: "Day",
+            ...statistics.day,
+        },
+        {
+            label: "Month",
+            ...statistics.month,
+        },
+    ];
+
     return (
-        <div>
-            <h3>Statistics</h3>
+        <Box>
+            <Typography
+                variant="subtitle1"
+                sx={{
+                    fontWeight: 600,
+                    mb: 1.5,
+                }}
+            >
+                Statistics
+            </Typography>
 
-            <table>
-    <thead>
-        <tr>
-            <th>Metric</th>
-            <th>Segment</th>
-            <th>Day</th>
-            <th>Month</th>
-        </tr>
-    </thead>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "1.2fr 1fr 1fr 1fr",
+                    alignItems: "center",
+                    px: 1,
+                    py: 0.75,
+                }}
+            >
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                >
+                    Period
+                </Typography>
 
-    <tbody>
-        <tr>
-            <td>Tonnes</td>
-            <td>{statistics.segment.tonnes.toFixed(2)} t</td>
-            <td>{statistics.day.tonnes.toFixed(2)} t</td>
-            <td>{statistics.month.tonnes.toFixed(2)} t</td>
-        </tr>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ textAlign: "right" }}
+                >
+                    Tonnes
+                </Typography>
 
-        <tr>
-            <td>Hours</td>
-            <td>{statistics.segment.hours.toFixed(2)} h</td>
-            <td>{statistics.day.hours.toFixed(2)} h</td>
-            <td>{statistics.month.hours.toFixed(2)} h</td>
-        </tr>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ textAlign: "right" }}
+                >
+                    Hours
+                </Typography>
 
-        <tr>
-            <td>Average Rate</td>
-            <td>{statistics.segment.rate.toFixed(2)} t/h</td>
-            <td>{statistics.day.rate.toFixed(2)} t/h</td>
-            <td>{statistics.month.rate.toFixed(2)} t/h</td>
-        </tr>
-    </tbody>
-</table>
-        </div>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ textAlign: "right" }}
+                >
+                    Rate
+                </Typography>
+            </Box>
+
+            <Divider />
+
+            {rows.map((row) => (
+                <Box
+                    key={row.label}
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns:
+                            "1.2fr 1fr 1fr 1fr",
+                        alignItems: "center",
+                        px: 1,
+                        py: 0.9,
+                    }}
+                >
+                    <Typography
+                        variant="body1"
+                        sx={{
+                            fontWeight:
+                                row.label === "Segment"
+                                    ? 600
+                                    : 400,
+                        }}
+                    >
+                        {row.label}
+                    </Typography>
+
+                    <Typography
+                        variant="body1"
+                        sx={{ textAlign: "right" }}
+                    >
+                        {row.tonnes.toFixed(1)} t
+                    </Typography>
+
+                    <Typography
+                        variant="body1"
+                        sx={{ textAlign: "right" }}
+                    >
+                        {row.hours.toFixed(1)} h
+                    </Typography>
+
+                    <Typography
+                        variant="body1"
+                        sx={{ textAlign: "right" }}
+                    >
+                        {row.rate.toFixed(1)} t/h
+                    </Typography>
+                </Box>
+            ))}
+        </Box>
     );
 }
-

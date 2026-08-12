@@ -1,40 +1,135 @@
+import { Box } from "@mui/material";
+
+import { Typography } from "@andritzot/metris-web-ui/data-display/typography";
+
 import type { ProductionSegment } from "../types/Production";
 
 interface SegmentDetailsProps {
     readonly segment: ProductionSegment | null;
 }
 
-export default function SegmentDetails({
-    segment,
-}: SegmentDetailsProps) {
+function formatRuntime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor(
+        (seconds % 3600) / 60,
+    );
+    const remainingSeconds = seconds % 60;
 
-if (!segment) {
+    return `${hours} h ${minutes} min ${remainingSeconds} s`;
+}
+
+interface DetailItemProps {
+    readonly label: string;
+    readonly value: string;
+}
+
+function DetailItem({
+    label,
+    value,
+}: DetailItemProps) {
     return (
-        <div>
-            No segment selected.
-        </div>
+        <Box>
+            <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mb: 0.25 }}
+            >
+                {label}
+            </Typography>
+
+            <Typography variant="body1">
+                {value}
+            </Typography>
+        </Box>
     );
 }
 
-return (
+export default function SegmentDetails({
+    segment,
+}: SegmentDetailsProps) {
+    if (!segment) {
+        return (
+            <Box>
+                <Typography
+                    variant="subtitle1"
+                    sx={{ fontWeight: 600, mb: 1.5 }}
+                >
+                    Selected Segment
+                </Typography>
 
-    <div>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                >
+                    No segment selected.
+                </Typography>
+            </Box>
+        );
+    }
 
-        <h3>Segment Details</h3>
+    return (
+        <Box>
+            <Typography
+                variant="subtitle1"
+                sx={{
+                    fontWeight: 600,
+                    mb: 1.5,
+                }}
+            >
+                Selected Segment
+            </Typography>
 
-        <p><strong>Segment ID:</strong> {segment.segmentId}</p>
+            <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mb: 0.25 }}
+            >
+                Segment ID
+            </Typography>
 
-        <p><strong>Production ID:</strong> {segment.prodId}</p>
+            <Typography
+                variant="h6"
+                sx={{ mb: 2 }}
+            >
+                {segment.segmentId}
+            </Typography>
 
-        <p><strong>Start:</strong> {segment.startTime.toLocaleString()}</p>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "1fr 1fr",
+                    columnGap: 3,
+                    rowGap: 1.5,
+                }}
+            >
+                <DetailItem
+                    label="Production ID"
+                    value={segment.prodId}
+                />
 
-        <p><strong>Stop:</strong> {segment.stopTime.toLocaleString()}</p>
+                <DetailItem
+                    label="Start"
+                    value={segment.startTime.toLocaleString()}
+                />
 
-        <p><strong>Runtime:</strong> {segment.runTime} s</p>
+                <DetailItem
+                    label="Stop"
+                    value={segment.stopTime.toLocaleString()}
+                />
 
-        <p><strong>Mass:</strong> {segment.massTotal} t</p>
+                <DetailItem
+                    label="Runtime"
+                    value={formatRuntime(
+                        segment.runTime,
+                    )}
+                />
 
-    </div>
-
-);
+                <DetailItem
+                    label="Mass"
+                    value={`${segment.massTotal.toFixed(2)} t`}
+                />
+            </Box>
+        </Box>
+    );
 }

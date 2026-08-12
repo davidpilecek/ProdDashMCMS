@@ -31,7 +31,7 @@ export default function BarChart({
   displayedYear,
   yLabel,
   width,
-  height = 400,
+  height = 440,
   categoryGapRatio = 0.2,
   loading = false,
   showGrid = true,
