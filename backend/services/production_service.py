@@ -1,0 +1,118 @@
+import csv
+from pathlib import Path
+
+
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+
+
+def _get_filename(month: int, year: int, suffix: str) -> Path:
+    month_string = f"{month:02d}"
+    return DATA_DIR / f"{month_string}{year}_{suffix}.csv"
+
+
+
+def _parse_production_unit(row: dict) -> dict:
+    return {
+        "prodId": row["PROD_ID"],
+        "prodNum": row["PROD_NUM"],
+        "prodDesc": row["PROD_DESC"],
+        "recipeName": row["RECIPE_NAME"],
+    }
+
+
+
+def _parse_segment(row: dict) -> dict:
+    return {
+        "segmentId": row["SEGMENT_ID"],
+        "prodId": row["PROD_ID"],
+        "usrId": row["USR_ID"],
+
+        "startTime": row["START_TIME"],
+        "stopTime": row["STOP_TIME"],
+
+        "runTime": float(row["RUN_TIME"]),
+        "massTotal": float(row["MASS_TOTAL"]),
+
+        "add1Total": float(row["ADD1_TOTAL"]),
+        "add2Total": float(row["ADD2_TOTAL"]),
+        "add3Total": float(row["ADD3_TOTAL"]),
+        "add4Total": float(row["ADD4_TOTAL"]),
+        "add5Total": float(row["ADD5_TOTAL"]),
+
+        "totalInclAdditives":
+            float(row["TOTAL_INCL_ADDITIVES"]),
+
+        "add1Percent": float(row["ADD1_PERCENT"]),
+        "add2Percent": float(row["ADD2_PERCENT"]),
+        "add3Percent": float(row["ADD3_PERCENT"]),
+        "add4Percent": float(row["ADD4_PERCENT"]),
+        "add5Percent": float(row["ADD5_PERCENT"]),
+    }
+
+
+
+def load_segments(month: int, year: int) -> list[dict]:
+
+    filename = _get_filename(
+        month,
+        year,
+        "prod_segment",
+    )
+
+    if not filename.exists():
+        return []
+
+    with filename.open(
+        newline="",
+        encoding="utf-8",
+    ) as file:
+
+        reader = csv.DictReader(file)
+
+        return [
+            _parse_segment(row)
+            for row in reader
+        ]
+
+
+def load_production_units(
+    month: int,
+    year: int,
+) -> list[dict]:
+
+    filename = _get_filename(
+        month,
+        year,
+        "prod_list",
+    )
+
+    if not filename.exists():
+        return []
+
+    with filename.open(
+        newline="",
+        encoding="utf-8",
+    ) as file:
+
+        reader = csv.DictReader(file)
+
+        return [
+            _parse_production_unit(row)
+            for row in reader
+        ]
+
+
+def load_production_month(
+    month: int,
+    year: int,
+) -> dict:
+
+    return {
+        "month": month,
+        "year": year,
+        "segments": load_segments(month, year),
+        "productionUnits": load_production_units(
+            month,
+            year,
+        ),
+    }
