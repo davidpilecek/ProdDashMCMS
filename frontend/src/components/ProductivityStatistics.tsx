@@ -117,10 +117,7 @@ export default function ProductivityStatistics({
                     <Typography
                         variant="body1"
                         sx={{
-                            fontWeight:
-                                row.label === "Segment"
-                                    ? 600
-                                    : 400,
+                            fontWeight: 600
                         }}
                     >
                         {row.label}

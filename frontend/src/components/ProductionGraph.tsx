@@ -29,7 +29,7 @@ export default function BarChart({
   selectedProductionId,
   displayedMonth,
   displayedYear,
-  yLabel,
+  yLabel = "Mass (t)",
   width,
   height = 440,
   categoryGapRatio = 0.2,

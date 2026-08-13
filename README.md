@@ -1,3 +1,7 @@
+## TODO:
+- Add report generation
+- Add start and stop time of production unit
+
 ## Setup on a new Windows PC
 
 ### Prerequisites
@@ -43,3 +47,4 @@ python -m waitress --listen=127.0.0.1:5000 app:app
 cd ..\frontend
 
 pnpm dev
+

@@ -25,9 +25,15 @@ export default function ProductionUnitDetails({
 
     return (
         <Box sx={{padding:4}}>
-            <Typography variant="h6">Production Unit</Typography>
 
-            <Box sx={{ mt: 2}}>
+            <Typography variant="h5"  sx={{ fontWeight: 600 }}>Production Unit</Typography>
+
+            <Box sx={{  mt:1,
+                        mb:1,
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: 2,}} >
+
                 {/* <Typography variant="subtitle2">
                     Identification
                 </Typography> */}
@@ -48,24 +54,25 @@ export default function ProductionUnitDetails({
                 </Box>
 
                 <Box>
-                    <strong>Recipe</strong>
+                    <strong>Recipe Name</strong>
                     <div>{productionUnit.recipeName}</div>
                 </Box>
-            </Box>
-
-            <Divider />
+            
+            {/* </Box> */}
+            {/* <Divider /> */}
 
             {/* <Typography variant="subtitle2">
                 Production Statistics
             </Typography> */}
 
-            <Box
+            {/* <Box
                 sx={{
                     display: "grid",
                     gridTemplateColumns: "1fr 1fr",
                     gap: 2,
                 }}
-            >
+            > */}
+
                 <Box>
                     <strong>Segments</strong>
                     <div>{statistics.segmentCount}</div>

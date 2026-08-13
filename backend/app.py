@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 
+from routes.report import report_bp
 from routes.production import production_bp
 from routes.statistics import statistics_bp
 
@@ -10,6 +11,7 @@ CORS(app)
 
 app.register_blueprint(production_bp)
 app.register_blueprint(statistics_bp)
+app.register_blueprint(report_bp)
 
 
 @app.get("/api/health")

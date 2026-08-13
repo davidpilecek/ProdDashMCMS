@@ -442,7 +442,7 @@ return (
                     Production Overview
                 </Typography>
 
-                <Typography
+                {/* <Typography
                     variant="body2"
                     color="text.secondary"
                 >
@@ -452,7 +452,7 @@ return (
                             displayedMonth
                     )?.label}{" "}
                     {displayedYear}
-                </Typography>
+                </Typography> */}
             </Stack>
         </Box>
 
@@ -477,10 +477,8 @@ return (
             />
         </Box>
 
-        <Divider />
-
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-    <Divider />
+    <Divider />          
 
     <Box sx={{ display: "flex", alignItems: "stretch" }}>
         {/* Left Column: Segment Details & Navigation */}
@@ -493,7 +491,7 @@ return (
                 justifyContent="space-between" 
                 sx={{ mb: 2 }}
             >
-                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                <Typography variant="h5" sx={{ fontWeight: 600 }}>
                     Selected Segment
                 </Typography>
 
@@ -540,7 +538,7 @@ return (
     </Stack>
 </Panels.Item>
 
-                <Panels.Separator />
+                <Panels.Separator disableDrag />
 
                 <Panels.Item defaultSize="30%" minSize="25%" surface>
                     <Stack
