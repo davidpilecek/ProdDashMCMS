@@ -71,3 +71,54 @@ export async function getProductionStatistics(
 
     return response.json();
 }
+
+export async function generatePdfReport(
+    displayedMonth: number,
+    displayedYear: number,
+) {
+    try {
+        const response = await fetch(
+            "http://localhost:5000/api/report",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    month: displayedMonth,
+                    year: displayedYear,
+                }),
+            },
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `Report generation failed: ${response.status}`,
+            );
+        }
+
+        const blob = await response.blob();
+
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download =
+            `production_report_${displayedYear}_${String(displayedMonth).padStart(2, "0")}.pdf`;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.error(
+            "Failed to generate PDF report:",
+            error,
+        );
+    }
+}

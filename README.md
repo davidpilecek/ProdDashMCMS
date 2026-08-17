@@ -1,6 +1,7 @@
 ## TODO:
-- Add report generation
 - Add start and stop time of production unit
+- for report graph, make it so that colors alternate based on production unit
+- add production unit consumptions to report
 
 ## Setup on a new Windows PC
 

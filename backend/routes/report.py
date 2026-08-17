@@ -56,7 +56,8 @@ def generate_report():
             ),
         )
 
-    except Exception:
+    except Exception as error:
+        print(error)
         return jsonify({
             "success": False,
             "error": "Failed to generate report.",

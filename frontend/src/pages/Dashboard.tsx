@@ -22,6 +22,7 @@ import ProductivityStatistics from "../components/ProductivityStatistics";
 import {
     getProductionMonth,
     getProductionStatistics,
+    generatePdfReport,
 } from "../api/productionApi";
 
 import type {
@@ -231,9 +232,6 @@ useEffect(() => {
     selectedSegmentId,
 ]);
 
-
-
-
     // --------------------------------------------------
     // Navigation
     // --------------------------------------------------
@@ -398,7 +396,7 @@ return (
                 <Button
                     variant="outlined"
                     size="small"
-                    onClick={function A(){}}
+                    onClick={() => generatePdfReport(displayedMonth, displayedYear)}
                 >
                     PDF Report
                 </Button>
