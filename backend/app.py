@@ -7,7 +7,6 @@ from routes.report import report_bp
 from routes.production import production_bp
 from routes.statistics import statistics_bp
 
-
 def create_app(frontend_dir=None):
     app = Flask(__name__)
 

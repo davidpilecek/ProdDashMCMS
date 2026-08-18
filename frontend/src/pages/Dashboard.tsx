@@ -23,6 +23,7 @@ import {
     getProductionMonth,
     getProductionStatistics,
     generatePdfReport,
+    generateExcelReport,
 } from "../api/productionApi";
 
 import type {
@@ -404,7 +405,7 @@ return (
                 <Button
                     variant="contained"
                     size="small"
-                    onClick={function A(){}}
+                    onClick={() => generateExcelReport(displayedMonth, displayedYear)}
                 >
                     Excel Report
                 </Button>

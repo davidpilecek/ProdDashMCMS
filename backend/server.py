@@ -1,12 +1,8 @@
-from pathlib import Path
-
 from waitress import serve
 
 from app import create_app
+from path_config import FRONTEND_DIR
 
-
-BASE_DIR = Path(__file__).resolve().parent
-FRONTEND_DIR = BASE_DIR.parent / "frontend" / "dist"
 
 app = create_app(frontend_dir=FRONTEND_DIR)
 

@@ -122,3 +122,55 @@ export async function generatePdfReport(
         );
     }
 }
+
+
+export async function generateExcelReport(
+    displayedMonth: number,
+    displayedYear: number,
+) {
+    try {
+        const response = await fetch(
+            "/api/report/xlsx",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    month: displayedMonth,
+                    year: displayedYear,
+                }),
+            },
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `Report generation failed: ${response.status}`,
+            );
+        }
+
+        const blob = await response.blob();
+
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download =
+            `production_report_${displayedYear}_${String(displayedMonth).padStart(2, "0")}.xlsx`;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.error(
+            "Failed to generate Excel report:",
+            error,
+        );
+    }
+}

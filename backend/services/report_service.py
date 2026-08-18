@@ -22,8 +22,8 @@ from services.report_graph_service import generate_production_graph
 from services.production_service import load_production_month
 from services.statistics_service import calculate_production_statistics
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-LOGO_PATH = BASE_DIR / "reports" / "assets" / "logo_metris_wave.png"
+from path_config import LOGO_PATH
+
 
 # Report colors
 PRIMARY = HexColor("#003a70")

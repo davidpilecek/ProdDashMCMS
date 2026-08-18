@@ -5,8 +5,7 @@ from services.statistics_service import (
     calculate_production_unit_statistics,
 )
 
-
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+from path_config import DATA_DIR
 
 
 def _get_filename(month: int, year: int, suffix: str) -> Path:
