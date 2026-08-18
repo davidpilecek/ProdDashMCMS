@@ -4,7 +4,7 @@ import type {
     ProductionStatistics,
 } from "../types/Production";
 
-const API_BASE_URL = "http://127.0.0.1:5000";
+// const API_BASE_URL = "http://127.0.0.1:5000";
 
 interface ProductionSegmentResponse
     extends Omit<ProductionSegment, "startTime" | "stopTime"> {
@@ -18,7 +18,7 @@ export async function getProductionMonth(
 ): Promise<ProductionMonth> {
 
     const response = await fetch(
-        `${API_BASE_URL}/api/production?month=${month}&year=${year}`,
+        `/api/production?month=${month}&year=${year}`,
     );
 
     if (!response.ok) {
@@ -57,7 +57,7 @@ export async function getProductionStatistics(
 ): Promise<ProductionStatistics> {
 
     const response = await fetch(
-        `${API_BASE_URL}/api/production/statistics` +
+        `/api/production/statistics` +
         `?month=${month}` +
         `&year=${year}` +
         `&segmentId=${encodeURIComponent(segmentId)}`,
@@ -78,7 +78,7 @@ export async function generatePdfReport(
 ) {
     try {
         const response = await fetch(
-            "http://localhost:5000/api/report",
+            "/api/report",
             {
                 method: "POST",
                 headers: {
