@@ -14,6 +14,18 @@ function formatRuntime(seconds: number): string {
     return `${hours} h ${minutes} min ${remainingSeconds} s`;
 }
 
+function formatDateTime(value: string): string {
+    return new Date(value).toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+    });
+}
+
 export default function ProductionUnitDetails({
     productionUnit,
 }: ProductionUnitDetailsProps) {
@@ -28,7 +40,7 @@ export default function ProductionUnitDetails({
 
             <Typography variant="h5"  sx={{ fontWeight: 600 }}>Production Unit</Typography>
 
-            <Box sx={{  mt:1,
+            <Box sx={{  mt:2,
                         mb:1,
                         display: "grid",
                         gridTemplateColumns: "1fr 1fr",
@@ -82,6 +94,20 @@ export default function ProductionUnitDetails({
                     <strong>Runtime</strong>
                     <div>
                         {formatRuntime(statistics.runTime)}
+                    </div>
+                </Box>
+
+                <Box>
+                    <strong>Start</strong>
+                    <div>
+                        {formatDateTime(statistics.startTime)}
+                    </div>
+                </Box>
+
+                <Box>
+                    <strong>Stop</strong>
+                    <div>
+                        {formatDateTime(statistics.stopTime)}
                     </div>
                 </Box>
 

@@ -53,6 +53,10 @@ export interface ProductionUnit {
 
 export interface ProductionUnitStatistics {
     segmentCount: number;
+
+    startTime: string;
+    stopTime: string;
+
     runTime: number;
     hours: number;
     mass: number;

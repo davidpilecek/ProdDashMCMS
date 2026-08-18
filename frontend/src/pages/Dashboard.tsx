@@ -406,7 +406,7 @@ return (
                     size="small"
                     onClick={function A(){}}
                 >
-                    CSV Report
+                    Excel Report
                 </Button>
             </Box>
         </Box>
@@ -436,7 +436,7 @@ return (
                 alignItems="baseline"
                 justifyContent="space-between"
             >
-                <Typography variant="h6">
+                <Typography variant="h5" sx={{ fontWeight: 600 }}>
                     Production Overview
                 </Typography>
 

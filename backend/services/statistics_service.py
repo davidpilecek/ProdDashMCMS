@@ -99,6 +99,16 @@ def calculate_production_unit_statistics(
             f"Production unit not found: {prod_id}"
         )
 
+    start_time = min(
+    segment["startTime"]
+    for segment in unit_segments
+)
+
+    stop_time = max(
+        segment["stopTime"]
+        for segment in unit_segments
+    )
+
     mass = sum(
     float(segment["massTotal"])
     for segment in unit_segments
@@ -143,6 +153,9 @@ def calculate_production_unit_statistics(
         }
     return {
     "segmentCount": len(unit_segments),
+
+    "startTime": start_time,
+    "stopTime": stop_time,
 
     "runTime": runtime,
     "hours": hours,

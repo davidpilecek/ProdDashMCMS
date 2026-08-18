@@ -30,14 +30,14 @@ function DetailItem({
     return (
         <Box>
             <Typography
-                variant="body2"
-                color="text.secondary"
+                variant="body1"
+                color="text.primary"
                 sx={{ mb: 0.25 }}
             >
                 {label}
             </Typography>
 
-            <Typography variant="body1">
+            <Typography variant="body2">
                 {value}
             </Typography>
         </Box>
@@ -101,6 +101,13 @@ export default function SegmentDetails({
                 />
 
                 <DetailItem
+                    label="Runtime"
+                    value={formatRuntime(
+                        segment.runTime,
+                    )}
+                />
+
+                <DetailItem
                     label="Start"
                     value={segment.startTime.toLocaleString()}
                 />
@@ -108,13 +115,6 @@ export default function SegmentDetails({
                 <DetailItem
                     label="Stop"
                     value={segment.stopTime.toLocaleString()}
-                />
-
-                <DetailItem
-                    label="Runtime"
-                    value={formatRuntime(
-                        segment.runTime,
-                    )}
                 />
 
                 <DetailItem
