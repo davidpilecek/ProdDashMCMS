@@ -96,11 +96,6 @@ export default function SegmentDetails({
                 }}
             >
                 <DetailItem
-                    label="Production ID"
-                    value={segment.prodId}
-                />
-
-                <DetailItem
                     label="Runtime"
                     value={formatRuntime(
                         segment.runTime,
