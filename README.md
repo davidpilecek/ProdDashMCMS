@@ -14,7 +14,7 @@
 ### Clone
 
 git clone <repository>
-cd ProductionDashboard
+cd ProdDashMCMS
 
 ### Backend
 

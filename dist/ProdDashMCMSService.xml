@@ -1,0 +1,17 @@
+<service>
+    <id>ProdDashMCMS</id>
+    <name>ANDRITZ Production Dashboard</name>
+    <description>ANDRITZ Production Dashboard service.</description>
+
+    <executable>%BASE%\ProdDashMCMS.exe</executable>
+
+    <workingdirectory>%BASE%</workingdirectory>
+
+    <startmode>Automatic</startmode>
+
+    <onfailure action="restart" delay="10 sec" />
+
+    <log mode="roll" />
+
+    <stoptimeout>15 sec</stoptimeout>
+</service>

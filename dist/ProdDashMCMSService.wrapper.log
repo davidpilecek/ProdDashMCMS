@@ -1,0 +1,4 @@
+2026-08-18 18:46:27,901 DEBUG - Starting WinSW in console mode
+2026-08-18 18:46:42,900 DEBUG - Starting WinSW in console mode
+2026-08-18 18:46:42,948 INFO  - Installing service 'ANDRITZ Production Dashboard (ProductionDashboard)'...
+2026-08-18 18:46:42,957 FATAL - Failed to open the service control manager database. Access is denied.
