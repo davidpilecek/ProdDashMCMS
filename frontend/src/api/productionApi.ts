@@ -174,3 +174,52 @@ export async function generateExcelReport(
         );
     }
 }
+
+export async function downloadCsvExport(
+    displayedMonth: number,
+    displayedYear: number,
+) {
+    try {
+        const response = await fetch(
+            "/api/report/csv",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    month: displayedMonth,
+                    year: displayedYear,
+                }),
+            },
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `CSV export failed: ${response.status}`,
+            );
+        }
+
+        const blob = await response.blob();
+
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download =
+            `production_log_${displayedYear}_${String(displayedMonth).padStart(2, "0")}.csv`;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.error(
+            "Failed to export CSV:",
+            error,
+        );
+    }
+}

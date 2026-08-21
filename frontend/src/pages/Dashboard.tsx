@@ -24,6 +24,7 @@ import {
     getProductionStatistics,
     generatePdfReport,
     generateExcelReport,
+    downloadCsvExport,
 } from "../api/productionApi";
 
 import type {
@@ -408,6 +409,14 @@ return (
                     onClick={() => generateExcelReport(displayedMonth, displayedYear)}
                 >
                     Excel Report
+                </Button>
+
+                                <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => downloadCsvExport(displayedMonth, displayedYear)}
+                >
+                    CSV Export
                 </Button>
             </Box>
         </Box>

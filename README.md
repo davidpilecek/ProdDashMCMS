@@ -1,5 +1,5 @@
 ## TODO:
-- Add start and stop time of production unit
+- Fix running time, it should only calculate actual running time and not just difference stop-start
 - for report graph, make it so that colors alternate based on production unit
 
 ## Setup on a new Windows PC
