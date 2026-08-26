@@ -179,6 +179,9 @@ Ctrl+C
 
 ---
 
+
+## Move Service files from deployment to dist
+
 ## 6. Create the production installer
 
 Open:
