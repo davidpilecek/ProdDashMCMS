@@ -20,3 +20,8 @@ backend/.env
 # OS
 .DS_Store
 Thumbs.db
+
+# Installation files
+dist/
+deployment/
+build/

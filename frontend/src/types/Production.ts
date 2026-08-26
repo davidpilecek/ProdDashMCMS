@@ -98,7 +98,7 @@ export interface ProductionMonth {
 
     readonly segments: ProductionSegment[];
     readonly productionUnits: ProductionUnit[];
-
+    
 }
 
 export interface ProductionStatistics {

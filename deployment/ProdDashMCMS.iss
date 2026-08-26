@@ -29,7 +29,6 @@ Source: "..\dist\ProdDashMCMS.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\ProdDashMCMSService.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\ProdDashMCMSService.xml"; DestDir: "{app}"; Flags: ignoreversion
 
-Source: "data\*"; DestDir: "{commonappdata}\ANDRITZ\ProdDashMCMS\data"; Flags: ignoreversion recursesubdirs createallsubdirs onlyifdoesntexist
 
 [Dirs]
 Name: "{commonappdata}\ANDRITZ\ProdDashMCMS\data"
