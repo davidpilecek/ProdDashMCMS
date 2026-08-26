@@ -93,6 +93,15 @@ This is the production frontend that PyInstaller will bundle.
 Do not use `npm run dev` for the production build.
 
 ---
+## 3.5. Download WinSW
+go to https://github.com/winsw/winsw/releases?utm_source=chatgpt.com
+
+download x64 version
+place it in deployment/ and rename to ProdDashXCMSService.exe
+
+in deployment/, create ProdDashXCMSService.xml
+
+Example found in repo
 
 ## 4. Build the PyInstaller executable
 
@@ -169,6 +178,9 @@ Ctrl+C
 ```
 
 ---
+
+
+## Move Service files from deployment to dist
 
 ## 6. Create the production installer
 
