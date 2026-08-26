@@ -1,7 +1,7 @@
 <service>
     <id>ProdDashMCMS</id>
-    <name>ANDRITZ Production Dashboard</name>
-    <description>ANDRITZ Production Dashboard service.</description>
+    <name>ANDRITZ ProdDash MCMS</name>
+    <description>ANDRITZ Production Dashboard service for MCMS.</description>
 
     <executable>%BASE%\ProdDashMCMS.exe</executable>
 

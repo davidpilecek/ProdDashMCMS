@@ -70,22 +70,6 @@ export default function SegmentDetails({
     return (
         <Box>
 
-
-            <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ mb: 0.25 }}
-            >
-                Segment ID
-            </Typography>
-
-            <Typography
-                variant="h6"
-                sx={{ mb: 2 }}
-            >
-                {segment.segmentId}
-            </Typography>
-
             <Box
                 sx={{
                     display: "grid",
