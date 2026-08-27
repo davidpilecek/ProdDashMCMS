@@ -53,7 +53,7 @@ def load_segments(month: int, year: int) -> list[dict]:
     filename = _get_filename(
         month,
         year,
-        "prod_segment",
+        "PROD_SEGMENT",
     )
 
     if not filename.exists():
@@ -80,7 +80,7 @@ def load_production_units(
     filename = _get_filename(
         month,
         year,
-        "prod_list",
+        "PROD_LIST",
     )
 
     if not filename.exists():

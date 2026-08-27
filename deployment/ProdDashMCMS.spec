@@ -10,7 +10,7 @@ FRONTEND_DIR = PROJECT_DIR / "frontend" / "dist"
 
 hiddenimports = (
     collect_submodules("routes")
-    + collect_submodules("services")
+    + collect_submodules("services") + ['waitress']
 )
 
 

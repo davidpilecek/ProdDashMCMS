@@ -154,7 +154,7 @@ export default function ProductionUnitDetails({
 
                 <span>Additive 1</span>
                 <span>
-                    {statistics.additives.add1.mass.toFixed(2)} t
+                    {(statistics.additives.add1.mass * 1000).toFixed(2)} kg
                 </span>
                 <span>
                     {statistics.additives.add1.percent.toFixed(2)} %
@@ -162,7 +162,7 @@ export default function ProductionUnitDetails({
 
                 <span>Additive 2</span>
                 <span>
-                    {statistics.additives.add2.mass.toFixed(2)} t
+                    {(statistics.additives.add2.mass * 1000).toFixed(2)} kg
                 </span>
                 <span>
                     {statistics.additives.add2.percent.toFixed(2)} %
@@ -170,7 +170,7 @@ export default function ProductionUnitDetails({
 
                 <span>Additive 3</span>
                 <span>
-                    {statistics.additives.add3.mass.toFixed(2)} t
+                    {(statistics.additives.add3.mass * 1000).toFixed(2)} kg
                 </span>
                 <span>
                     {statistics.additives.add3.percent.toFixed(2)} %
@@ -178,7 +178,7 @@ export default function ProductionUnitDetails({
 
                 <span>Additive 4</span>
                 <span>
-                    {statistics.additives.add4.mass.toFixed(2)} t
+                    {(statistics.additives.add4.mass * 1000).toFixed(2)} kg
                 </span>
                 <span>
                     {statistics.additives.add4.percent.toFixed(2)} %
@@ -186,7 +186,7 @@ export default function ProductionUnitDetails({
 
                 <span>Additive 5</span>
                 <span>
-                    {statistics.additives.add5.mass.toFixed(2)} t
+                    {(statistics.additives.add5.mass * 1000).toFixed(2)} kg
                 </span>
                 <span>
                     {statistics.additives.add5.percent.toFixed(2)} %

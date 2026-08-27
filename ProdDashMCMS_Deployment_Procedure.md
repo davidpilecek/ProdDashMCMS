@@ -307,7 +307,7 @@ For example:
 ```text
 C:\ProgramData\ANDRITZ\ProdDashMCMS\data\
 ├── 012026_PROD_LIST.csv
-├── 012026_prod_segment.csv
+├── 012026_PROD_SEGMENT.csv
 ├── ...
 └── 082026_PROD_LIST.csv
 ```
@@ -451,7 +451,7 @@ C:\ProgramData\ANDRITZ\ProdDashMCMS\
 │
 └── data\
     ├── 012026_PROD_LIST.csv
-    ├── 012026_prod_segment.csv
+    ├── 012026_PROD_SEGMENT.csv
     ├── ...
     └── current production data
 ```
