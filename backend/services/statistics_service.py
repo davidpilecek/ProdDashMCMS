@@ -89,39 +89,54 @@ def calculate_production_unit_statistics(
     segments: list[dict],
     prod_id: str,
 ) -> dict:
+
     unit_segments = [
-    segment
-    for segment in segments
-    if segment["prodId"] == prod_id
-]
+        segment
+        for segment in segments
+        if segment["prodId"] == prod_id
+    ]
+
     if not unit_segments:
         raise ValueError(
             f"Production unit not found: {prod_id}"
         )
 
-    start_time = min(
-    segment["startTime"]
-    for segment in unit_segments
-)
+    # An open segment has an empty stopTime.
+    closed_segments = [
+        segment
+        for segment in unit_segments
+        if segment.get("stopTime")
+    ]
 
-    stop_time = max(
-        segment["stopTime"]
+    # Start time can still come from an open segment
+    start_time = min(
+        segment["startTime"]
         for segment in unit_segments
     )
 
+    # If there is an open segment, there is no final stop time yet.
+    if any(not segment.get("stopTime") for segment in unit_segments):
+        stop_time = None
+    else:
+        stop_time = max(
+            segment["stopTime"]
+            for segment in unit_segments
+        )
+
+    # Only use completed/closed segments for statistics.
     mass = sum(
-    float(segment["massTotal"])
-    for segment in unit_segments
+        float(segment["massTotal"] or 0)
+        for segment in closed_segments
     )
 
     runtime = sum(
-        float(segment["runTime"])
-        for segment in unit_segments
+        float(segment["runTime"] or 0)
+        for segment in closed_segments
     )
 
     total_incl_additives = sum(
-        float(segment["totalInclAdditives"])
-        for segment in unit_segments
+        float(segment["totalInclAdditives"] or 0)
+        for segment in closed_segments
     )
 
     hours = runtime / 3600
@@ -139,8 +154,8 @@ def calculate_production_unit_statistics(
         key = f"add{index}Total"
 
         total = sum(
-            float(segment[key])
-            for segment in unit_segments
+            float(segment.get(key) or 0)
+            for segment in closed_segments
         )
 
         additives[f"add{index}"] = {
@@ -151,20 +166,20 @@ def calculate_production_unit_statistics(
                 else 0.0
             ),
         }
+
     return {
-    "segmentCount": len(unit_segments),
+        "segmentCount": len(unit_segments),
 
-    "startTime": start_time,
-    "stopTime": stop_time,
+        "startTime": start_time,
+        "stopTime": stop_time,
 
-    "runTime": runtime,
-    "hours": hours,
+        "runTime": runtime,
+        "hours": hours,
 
-    "mass": mass,
-    "rate": rate,
+        "mass": mass,
+        "rate": rate,
 
-    "totalInclAdditives": total_incl_additives,
+        "totalInclAdditives": total_incl_additives,
 
-    "additives": additives,
+        "additives": additives,
     }
-

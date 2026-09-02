@@ -20,6 +20,12 @@ def _parse_production_unit(row: dict) -> dict:
         "recipeName": row["RECIPE_NAME"],
     }
 
+def _safe_float(value):
+    if value is None or str(value).strip() == "":
+        return None
+
+    return float(value)
+
 def _parse_segment(row: dict) -> dict:
     return {
         "segmentId": row["SEGMENT_ID"],
@@ -29,23 +35,23 @@ def _parse_segment(row: dict) -> dict:
         "startTime": row["START_TIME"],
         "stopTime": row["STOP_TIME"],
 
-        "runTime": float(row["RUN_TIME"]),
-        "massTotal": float(row["MASS_TOTAL"]),
+        "runTime": _safe_float(row["RUN_TIME"]),
+        "massTotal": _safe_float(row["MASS_TOTAL"]),
 
-        "add1Total": float(row["ADD1_TOTAL"]),
-        "add2Total": float(row["ADD2_TOTAL"]),
-        "add3Total": float(row["ADD3_TOTAL"]),
-        "add4Total": float(row["ADD4_TOTAL"]),
-        "add5Total": float(row["ADD5_TOTAL"]),
+        "add1Total": _safe_float(row["ADD1_TOTAL"]),
+        "add2Total": _safe_float(row["ADD2_TOTAL"]),
+        "add3Total": _safe_float(row["ADD3_TOTAL"]),
+        "add4Total": _safe_float(row["ADD4_TOTAL"]),
+        "add5Total": _safe_float(row["ADD5_TOTAL"]),
 
         "totalInclAdditives":
-            float(row["TOTAL_INCL_ADDITIVES"]),
+            _safe_float(row["TOTAL_INCL_ADDITIVES"]),
 
-        "add1Percent": float(row["ADD1_PERCENT"]),
-        "add2Percent": float(row["ADD2_PERCENT"]),
-        "add3Percent": float(row["ADD3_PERCENT"]),
-        "add4Percent": float(row["ADD4_PERCENT"]),
-        "add5Percent": float(row["ADD5_PERCENT"]),
+        "add1Percent": _safe_float(row["ADD1_PERCENT"]),
+        "add2Percent": _safe_float(row["ADD2_PERCENT"]),
+        "add3Percent": _safe_float(row["ADD3_PERCENT"]),
+        "add4Percent": _safe_float(row["ADD4_PERCENT"]),
+        "add5Percent": _safe_float(row["ADD5_PERCENT"]),
     }
 
 def load_segments(month: int, year: int) -> list[dict]:

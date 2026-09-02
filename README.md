@@ -1,6 +1,8 @@
 ## TODO:
-- Fix running time, it should only calculate actual running time and not just difference stop-start
+- There's a bug where if you click to a segment that's still running/open, it crashes
 - for report graph, make it so that colors alternate based on production unit
+- Add reload button to screen when there's an error
+- Change this on other apps too
 
 ## Setup on a new Windows PC
 
