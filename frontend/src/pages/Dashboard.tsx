@@ -106,8 +106,6 @@ export default function Dashboard() {
                     err,
                 );
 
-                setProductionMonth(null);
-
                 setError(
                     "Failed to load production data.",
                 );
@@ -281,42 +279,7 @@ useEffect(() => {
     // --------------------------------------------------
 
 
-    if (error) {
-        return (
-            <div>
-                {error}
-            </div>
-        );
-    }
 
-
-    if (!productionMonth) {
-        return (
-            <div>
-                No production data available.
-            </div>
-        );
-    }
-
-if (!productionMonth && loading) {
-    return (
-        <Box sx={{ p: 3 }}>
-            <Stack spacing={3}>
-                <Skeleton
-                    variant="rounded"
-                    width="100%"
-                    height={80}
-                />
-
-                <Skeleton
-                    variant="rectangular"
-                    width="100%"
-                    height={400}
-                />
-            </Stack>
-        </Box>
-    );
-}
 
     // --------------------------------------------------
     // UI
@@ -420,6 +383,25 @@ return (
                 </Button>
             </Box>
         </Box>
+            
+        {error && (
+            <Box
+                sx={{
+                    mb: 2,
+                    px: 2,
+                    py: 1,
+                    borderRadius: 1,
+                    backgroundColor: "error.light",
+                }}
+            >
+                <Typography
+                    variant="body2"
+                    color="error.dark"
+                >
+                    {error}
+                </Typography>
+            </Box>
+        )}
 
             <Panels.Group orientation="horizontal" autoSaveId="production-dashboard-layout">
 

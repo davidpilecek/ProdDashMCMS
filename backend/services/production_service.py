@@ -104,7 +104,6 @@ def load_production_units(
             for row in reader
         ]
 
-
 def load_production_month(
     month: int,
     year: int,
