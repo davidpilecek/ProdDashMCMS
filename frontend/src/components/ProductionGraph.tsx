@@ -5,8 +5,9 @@ import type { ProductionSegment, } from "../types/Production";
 
 const AXIS_COLOR = 'var(--metris-gray-400)';
 const SEGMENT_COLOR = 'var(--metris-gray-50)';
-const SELECTED_SEGMENT_COLOR = 'var(--metris-blue-1000)';
+const SELECTED_SEGMENT_COLOR = 'var(--metris-blue-800)';
 const SAME_PRODID_COLOR = 'var(--metris-blue-300)';
+const STROKE_COLOR = 'var(--metris-gray-600)';
 
 export interface BarChartProps {
   readonly data: ProductionSegment[];
@@ -162,8 +163,8 @@ const dayLabels = Array.from(
           stroke: AXIS_COLOR,
         },
         "& .MuiBarChart-element": {
-        stroke: "#000",
-        strokeWidth: 2,
+        stroke: STROKE_COLOR,
+        strokeWidth: 0.8,
     },
         '& text.MuiChartsAxis-tickLabel': {
           fill: AXIS_COLOR,
@@ -173,7 +174,7 @@ const dayLabels = Array.from(
         },
         '& .MuiChartsGrid-line': {
           stroke: '#ccc',
-          opacity: 0.2,
+          opacity: 0,
           strokeDasharray: '4 4',
         },
       }}
