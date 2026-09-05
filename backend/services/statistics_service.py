@@ -88,6 +88,7 @@ def calculate_production_statistics(
 def calculate_production_unit_statistics(
     segments: list[dict],
     prod_id: str,
+    setpoints: list[float] | None = None,
 ) -> dict:
 
     unit_segments = [
@@ -165,6 +166,11 @@ def calculate_production_unit_statistics(
                 if total_incl_additives > 0
                 else 0.0
             ),
+            "deviation":(
+                abs((total / total_incl_additives * 100) - setpoints[index - 1])
+                if total_incl_additives > 0 and setpoints is not None
+                else 0.0
+            )
         }
 
     return {

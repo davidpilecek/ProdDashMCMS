@@ -143,7 +143,7 @@ export default function ProductionUnitDetails({
                 sx={{
                     display: "grid",
                     gridTemplateColumns:
-                        "1fr 1fr 1fr",
+                        "1fr 1fr 1fr 1fr",
                     columnGap: 2,
                     rowGap: 1,
                 }}
@@ -151,6 +151,7 @@ export default function ProductionUnitDetails({
                 <strong>Additive</strong>
                 <strong>Mass</strong>
                 <strong>Percentage</strong>
+                <strong>Deviation</strong>
 
                 <span>Additive 1</span>
                 <span>
@@ -158,6 +159,9 @@ export default function ProductionUnitDetails({
                 </span>
                 <span>
                     {statistics.additives.add1.percent.toFixed(3)} %
+                </span>
+                <span>
+                    {statistics.additives.add1.deviation.toFixed(3)} %
                 </span>
 
                 <span>Additive 2</span>
@@ -167,6 +171,9 @@ export default function ProductionUnitDetails({
                 <span>
                     {statistics.additives.add2.percent.toFixed(3)} %
                 </span>
+                <span>
+                    {statistics.additives.add2.deviation.toFixed(3)} %
+                </span>
 
                 <span>Additive 3</span>
                 <span>
@@ -175,7 +182,9 @@ export default function ProductionUnitDetails({
                 <span>
                     {statistics.additives.add3.percent.toFixed(3)} %
                 </span>
-
+                <span>
+                    {statistics.additives.add3.deviation.toFixed(3)} %
+                </span>
                 <span>Additive 4</span>
                 <span>
                     {(statistics.additives.add4.mass * 1000).toFixed(2)} kg
@@ -183,13 +192,18 @@ export default function ProductionUnitDetails({
                 <span>
                     {statistics.additives.add4.percent.toFixed(3)} %
                 </span>
-
+                <span>
+                    {statistics.additives.add4.deviation.toFixed(3)} %
+                </span>
                 <span>Additive 5</span>
                 <span>
                     {(statistics.additives.add5.mass * 1000).toFixed(2)} kg
                 </span>
                 <span>
                     {statistics.additives.add5.percent.toFixed(3)} %
+                </span>
+                <span>
+                    {statistics.additives.add5.deviation.toFixed(3)} %
                 </span>
             </Box>
         </Box>

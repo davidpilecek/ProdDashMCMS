@@ -7,7 +7,6 @@ from services.statistics_service import (
 
 from path_config import DATA_DIR
 
-
 def _get_filename(month: int, year: int, suffix: str) -> Path:
     month_string = f"{month:02d}"
     return DATA_DIR / f"{month_string}{year}_{suffix}.csv"
@@ -18,6 +17,11 @@ def _parse_production_unit(row: dict) -> dict:
         "prodNum": row["PROD_NUM"],
         "prodDesc": row["PROD_DESC"],
         "recipeName": row["RECIPE_NAME"],
+        "add1SP": _safe_float(row["ADD1_RECIPE_SP"]),
+        "add2SP": _safe_float(row["ADD2_RECIPE_SP"]),
+        "add3SP": _safe_float(row["ADD3_RECIPE_SP"]),
+        "add4SP": _safe_float(row["ADD4_RECIPE_SP"]),
+        "add5SP": _safe_float(row["ADD5_RECIPE_SP"]),
     }
 
 def _safe_float(value):
@@ -117,11 +121,13 @@ def load_production_month(
     )
 
     for production_unit in production_units:
+        setpoints = [production_unit["add1SP"], production_unit["add2SP"], production_unit["add3SP"], production_unit["add4SP"], production_unit["add5SP"]]
 
         production_unit["statistics"] = (
             calculate_production_unit_statistics(
                 segments,
                 production_unit["prodId"],
+                setpoints=setpoints
             )
         )
 
