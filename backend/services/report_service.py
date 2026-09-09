@@ -17,6 +17,8 @@ from reportlab.platypus import (
     TableStyle,
     PageBreak,
 )
+from reportlab.lib.styles import ParagraphStyle
+
 
 from services.report_graph_service import generate_production_graph
 from services.production_service import load_production_month
@@ -101,6 +103,15 @@ class ReportService:
         )
 
         styles = getSampleStyleSheet()
+
+        table_style = ParagraphStyle(
+                    "TableText",
+                    parent=styles["BodyText"],
+                    fontSize=10,
+                    leading=10,
+                    wordWrap="CJK",
+                )
+        
         elements = []
 
         # --- Header ---
@@ -150,33 +161,37 @@ class ReportService:
         elements.append(summary_table)
         elements.append(PageBreak())
 
+
         # --- Production Units ---
         elements.append(Paragraph("Production Units", styles["Heading2"]))
 
         production_rows = [
-            ["Production ID", "Recipe", "Produced (+ Adds)", "Runtime", "Rate", "Additives"]
+            ["Production ID", "Recipe", "Start, Stop", "Mass", "Avg Rate", "Additives"]
         ]
 
         for unit in production_units:
             stats = unit["statistics"]
             additives = stats["additives"]
             additive_lines = [
-                f"Add. {i}: {additives[f'add{i}']['mass']:.2f} t ({additives[f'add{i}']['percent']:.2f}%)"
+                f"Add. {i}: {additives[f'add{i}']['mass']:.2f} kg ({additives[f'add{i}']['percent']:.2f}%)"
                 for i in range(1, 6)
             ]
-            
+
             production_rows.append([
-                unit["prodId"],
-                unit["recipeName"],
-                f"{stats['mass']:.2f} ({stats['totalInclAdditives']:.2f}) t",
-                f"{stats['hours']:.2f} h",
+                Paragraph(str(unit["prodId"]), table_style),
+                Paragraph(str(unit["recipeName"]), table_style),
+                Paragraph("<br/>".join([
+                    f"{stats['startTime'].replace('T', ' ')}",
+                    f"{stats['stopTime'].replace('T', ' ')}"]), styles["BodyText"]),
+
+                Paragraph(f"{stats['mass']:.2f} ({stats['totalInclAdditives']:.2f}) t", table_style),
                 f"{stats['rate']:.2f} t/h",
                 Paragraph("<br/>".join(additive_lines), styles["BodyText"]),
             ])
 
         production_table = Table(
             production_rows,
-            colWidths=[32 * mm, 28 * mm, 32 * mm, 22 * mm, 24 * mm, 50 * mm],
+            colWidths=[32 * mm, 25 * mm, 38 * mm, 35 * mm, 25 * mm, 50 * mm],
             repeatRows=1,
         )
         

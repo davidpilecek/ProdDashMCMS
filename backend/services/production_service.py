@@ -75,12 +75,9 @@ def load_segments(month: int, year: int) -> list[dict]:
     ) as file:
 
         reader = csv.DictReader(file)
+        rows = [_parse_segment(row) for row in reader if row["RUN_TIME"]]
 
-        return [
-            _parse_segment(row)
-            for row in reader
-        ]
-
+        return rows
 
 def load_production_units(
     month: int,
@@ -127,7 +124,7 @@ def load_production_month(
             calculate_production_unit_statistics(
                 segments,
                 production_unit["prodId"],
-                setpoints=setpoints
+                setpoints
             )
         )
 

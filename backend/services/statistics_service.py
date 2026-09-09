@@ -85,6 +85,7 @@ def calculate_production_statistics(
     }
 
 
+
 def calculate_production_unit_statistics(
     segments: list[dict],
     prod_id: str,
@@ -98,9 +99,28 @@ def calculate_production_unit_statistics(
     ]
 
     if not unit_segments:
-        raise ValueError(
-            f"Production unit not found: {prod_id}"
-        )
+        return {
+            "segmentCount": 0,
+            "startTime": None,
+            "stopTime": None,
+            "runTime": 0.0,
+            "hours": 0.0,
+            "mass": 0.0,
+            "rate": 0.0,
+            "totalInclAdditives": 0.0,
+            "additives": {
+                "add1": {
+                    "mass": 0.0,
+                    "percent": 0.0,
+                    "deviation": 0.0,
+                },
+                "add2": {
+                    "mass": 0.0,
+                    "percent": 0.0,
+                    "deviation": 0.0,
+                },
+            },
+        }
 
     # An open segment has an empty stopTime.
     closed_segments = [
@@ -170,12 +190,10 @@ def calculate_production_unit_statistics(
                 abs((total / total_incl_additives * 100) - setpoints[index - 1])
                 if total_incl_additives > 0 and setpoints is not None
                 else 0.0
-            )
+            ),
         }
-
     return {
-        "segmentCount": len(unit_segments),
-
+        "segmentCount": len(closed_segments),
         "startTime": start_time,
         "stopTime": stop_time,
 
