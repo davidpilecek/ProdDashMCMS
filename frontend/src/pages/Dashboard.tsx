@@ -400,13 +400,9 @@ return (
             </Box>
         )}
 
-            <Panels.Group orientation="horizontal" autoSaveId="production-dashboard-layout">
+<Panels.Group orientation="horizontal" autoSaveId="production-dashboard-layout">
 
-<Panels.Item
-    defaultSize="70%"
-    minSize="55%"
-    surface
->
+<Panels.Item defaultSize={70} minSize={55} surface>
     <Stack
         spacing={0}
         sx={{ height: "100%" }}
