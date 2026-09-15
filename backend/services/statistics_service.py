@@ -84,8 +84,6 @@ def calculate_production_statistics(
         ),
     }
 
-
-
 def calculate_production_unit_statistics(
     segments: list[dict],
     prod_id: str,
