@@ -88,6 +88,10 @@ export default function Dashboard() {
             setLoading(true);
             setError(null);
 
+            // Clear the previous month's data immediately.
+            setProductionMonth(null);
+            setSelectedSegmentId(null);
+
             try {
 
                 const data = await getProductionMonth(
@@ -103,6 +107,9 @@ export default function Dashboard() {
                     "Failed to load production data:",
                     err,
                 );
+
+                setProductionMonth(null);
+                setSelectedSegmentId(null);
 
                 setError(
                     "Failed to load production data.",
@@ -270,13 +277,6 @@ useEffect(() => {
             ],
         );
     }
-
-
-    // --------------------------------------------------
-    // Loading / error states
-    // --------------------------------------------------
-
-
 
 
     // --------------------------------------------------

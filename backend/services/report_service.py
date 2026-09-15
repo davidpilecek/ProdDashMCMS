@@ -46,6 +46,13 @@ def convert_runtime_to_days_hours(runtime: float) -> tuple[float, float, float, 
     seconds = time % 60
     return day, hour, minutes, seconds
 
+def formatRuntime(seconds: float) -> str:
+    day, hour, minutes, seconds = convert_runtime_to_days_hours(seconds)
+    if day == 0:
+        return f"{hour:.0f} h {minutes:.0f} min {seconds:.0f} s"
+    else:  
+        return f"{day:.0f} d {hour:.0f} h {minutes:.0f} min {seconds:.0f} s"
+
 class ReportHeader(Flowable):
     def __init__(self, logo_path: str, title: str, generated_text: str, logo_width: float, logo_height: float):
         super().__init__()
@@ -161,19 +168,18 @@ class ReportService:
         elements.append(summary_table)
         elements.append(PageBreak())
 
-
         # --- Production Units ---
         elements.append(Paragraph("Production Units", styles["Heading2"]))
 
         production_rows = [
-            ["Production ID", "Recipe", "Start, Stop", "Mass", "Avg Rate", "Additives"]
+            ["Production ID", "Recipe", "Start, Stop", "Mass", "Runtime", "Additives"]
         ]
 
         for unit in production_units:
             stats = unit["statistics"]
             additives = stats["additives"]
             additive_lines = [
-                f"Add. {i}: {additives[f'add{i}']['mass']:.2f} kg ({additives[f'add{i}']['percent']:.2f}%)"
+                f"{i}: {additives[f'add{i}']['mass']:.2f} kg ({additives[f'add{i}']['percent']:.2f}%)"
                 for i in range(1, 6)
             ]
 
@@ -182,19 +188,20 @@ class ReportService:
                 Paragraph(str(unit["recipeName"]), table_style),
                 Paragraph("<br/>".join([
                     f"{stats['startTime'].replace('T', ' ')}",
-                    f"{stats['stopTime'].replace('T', ' ')}"]), styles["BodyText"]),
-
-                Paragraph(f"{stats['mass']:.2f} ({stats['totalInclAdditives']:.2f}) t", table_style),
-                f"{stats['rate']:.2f} t/h",
-                Paragraph("<br/>".join(additive_lines), styles["BodyText"]),
+                    f"{stats['stopTime'].replace('T', ' ')}"]), table_style),
+                Paragraph("<br/>".join([
+                                    f"{stats['mass']:.2f} t",
+                                    f"incl. Adds: {stats['totalInclAdditives']:.2f} t"]), table_style),
+                Paragraph(formatRuntime(stats['runTime']), table_style),
+                Paragraph("<br/>".join(additive_lines), table_style),
             ])
 
         production_table = Table(
             production_rows,
-            colWidths=[32 * mm, 25 * mm, 38 * mm, 35 * mm, 25 * mm, 50 * mm],
+            colWidths=[32 * mm, 25 * mm, 37 * mm, 36 * mm, 30 * mm, 45 * mm],
             repeatRows=1,
         )
-        
+
         production_table.setStyle(TableStyle([
             ("BACKGROUND", (0, 0), (-1, 0), PRIMARY),
             ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),

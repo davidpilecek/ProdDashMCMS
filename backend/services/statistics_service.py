@@ -119,6 +119,21 @@ def calculate_production_unit_statistics(
                     "percent": 0.0,
                     "deviation": 0.0,
                 },
+                "add3": {
+                    "mass": 0.0,
+                    "percent": 0.0,
+                    "deviation": 0.0,
+                },
+                "add4": {
+                    "mass": 0.0,
+                    "percent": 0.0,
+                    "deviation": 0.0,
+                },
+                "add5": {
+                    "mass": 0.0,
+                    "percent": 0.0,
+                    "deviation": 0.0,
+                },
             },
         }
 
@@ -180,7 +195,7 @@ def calculate_production_unit_statistics(
         )
 
         additives[f"add{index}"] = {
-            "mass": total,
+            "mass": total * 1000, # Convert to kg
             "percent": (
                 total / total_incl_additives * 100
                 if total_incl_additives > 0
