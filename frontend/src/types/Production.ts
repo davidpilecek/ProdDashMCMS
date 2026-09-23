@@ -67,27 +67,22 @@ export interface ProductionUnitStatistics {
         add1: {
             mass: number;
             percent: number;
-            deviation: number;
         };
         add2: {
             mass: number;
             percent: number;
-            deviation: number;
         };
         add3: {
             mass: number;
             percent: number;
-            deviation: number;
         };
         add4: {
             mass: number;
             percent: number;
-            deviation: number;
         };
         add5: {
             mass: number;
             percent: number;
-            deviation: number;
         };
     };
 }

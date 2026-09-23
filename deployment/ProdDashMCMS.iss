@@ -1,5 +1,5 @@
 #define MyAppName "Metris Production Dashboard MCMS"
-#define MyAppVersion "1.0.6"
+#define MyAppVersion "1.0.7"
 #define MyAppPublisher "Metris"
 #define MyAppExeName "ProdDashMCMS.exe"
 #define MyServiceExeName "ProdDashMCMSService.exe"

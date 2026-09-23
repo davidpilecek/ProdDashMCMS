@@ -87,7 +87,6 @@ def calculate_production_statistics(
 def calculate_production_unit_statistics(
     segments: list[dict],
     prod_id: str,
-    setpoints: list[float] | None = None,
 ) -> dict:
 
     unit_segments = [
@@ -110,27 +109,22 @@ def calculate_production_unit_statistics(
                 "add1": {
                     "mass": 0.0,
                     "percent": 0.0,
-                    "deviation": 0.0,
                 },
                 "add2": {
                     "mass": 0.0,
                     "percent": 0.0,
-                    "deviation": 0.0,
                 },
                 "add3": {
                     "mass": 0.0,
                     "percent": 0.0,
-                    "deviation": 0.0,
                 },
                 "add4": {
                     "mass": 0.0,
                     "percent": 0.0,
-                    "deviation": 0.0,
                 },
                 "add5": {
                     "mass": 0.0,
                     "percent": 0.0,
-                    "deviation": 0.0,
                 },
             },
         }
@@ -197,11 +191,6 @@ def calculate_production_unit_statistics(
             "percent": (
                 total / total_incl_additives * 100
                 if total_incl_additives > 0
-                else 0.0
-            ),
-            "deviation":(
-                abs((total / total_incl_additives * 100) - setpoints[index - 1])
-                if total_incl_additives > 0 and setpoints is not None
                 else 0.0
             ),
         }
