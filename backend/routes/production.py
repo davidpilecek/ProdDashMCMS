@@ -2,6 +2,7 @@ from flask import Blueprint, request
 
 from services.production_service import (
     load_production_month,
+    get_available_production_periods,
 )
 
 
@@ -11,6 +12,11 @@ production_bp = Blueprint(
     url_prefix="/api/production",
 )
 
+@production_bp.get("/available")
+def get_available_production():
+    return {
+        "periods": get_available_production_periods()
+    }
 
 @production_bp.get("")
 def get_production():

@@ -2,6 +2,7 @@ import type {
     ProductionMonth,
     ProductionSegment,
     ProductionStatistics,
+    ProductionPeriod,
 } from "../types/Production";
 
 // const API_BASE_URL = "http://127.0.0.1:5000";
@@ -10,6 +11,25 @@ interface ProductionSegmentResponse
     extends Omit<ProductionSegment, "startTime" | "stopTime"> {
     startTime: string;
     stopTime: string;
+}
+
+export async function getAvailableProductionPeriods(): Promise<
+    ProductionPeriod[]
+> {
+    const response = await fetch(
+        `/api/production/available`,
+    );
+
+    if (!response.ok) {
+        throw new Error(
+            `Failed to fetch available production periods: ${response.status}`,
+        );
+    }
+
+    const data: { periods: ProductionPeriod[] } =
+        await response.json();
+
+    return data.periods;
 }
 
 export async function getProductionMonth(
@@ -49,6 +69,8 @@ export async function getProductionMonth(
         productionUnits: data.productionUnits,
     };
 }
+
+
 
 export async function getProductionStatistics(
     month: number,

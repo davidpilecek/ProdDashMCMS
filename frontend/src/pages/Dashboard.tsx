@@ -23,34 +23,16 @@ import {
     generatePdfReport,
     generateExcelReport,
     downloadCsvExport,
+    getAvailableProductionPeriods,
 } from "../api/productionApi";
 
 import type {
     ProductionMonth,
+    ProductionPeriod,
     ProductionStatistics,
 } from "../types/Production";
 
 import {useEffect, useMemo, useState } from 'react';
-
-const months = [
-    { value: 1, label: "January" },
-    { value: 2, label: "February" },
-    { value: 3, label: "March" },
-    { value: 4, label: "April" },
-    { value: 5, label: "May" },
-    { value: 6, label: "June" },
-    { value: 7, label: "July" },
-    { value: 8, label: "August" },
-    { value: 9, label: "September" },
-    { value: 10, label: "October" },
-    { value: 11, label: "November" },
-    { value: 12, label: "December" },
-];
-
-const years = [
-    2025,
-    2026,
-];
 
 export default function Dashboard() {
 
@@ -58,11 +40,14 @@ export default function Dashboard() {
     // State
     // --------------------------------------------------
 
-    const [displayedMonth, setDisplayedMonth] =
-        useState(1);
+    const [availablePeriods, setAvailablePeriods] = useState<
+        ProductionPeriod[]
+    >([]);
 
-    const [displayedYear, setDisplayedYear] =
-        useState(2026);
+    const [displayedMonth, setDisplayedMonth] = useState<number | null>(null);
+    const [displayedYear, setDisplayedYear] = useState<number | null>(null);
+    
+    const [loadingPeriods, setLoadingPeriods] = useState(true);
 
     const [productionMonth, setProductionMonth] =
         useState<ProductionMonth | null>(null);
@@ -76,55 +61,131 @@ export default function Dashboard() {
     const [selectedSegmentId, setSelectedSegmentId] =
         useState<string | null>(null);
 
+    // --------------------------------------------------
+    // Load available months and years
+    // --------------------------------------------------
+
+    useEffect(() => {
+        const loadAvailablePeriods = async () => {
+            try {
+                setLoadingPeriods(true);
+
+                const periods = await getAvailableProductionPeriods();
+
+                setAvailablePeriods(periods);
+
+                if (periods.length > 0) {
+                    const latestPeriod = periods[periods.length - 1];
+
+                    setDisplayedYear(latestPeriod.year);
+                    setDisplayedMonth(latestPeriod.month);
+                }
+            } catch (error) {
+                console.error(
+                    "Failed to load available production periods:",
+                    error,
+                );
+            } finally {
+                setLoadingPeriods(false);
+            }
+        };
+
+        loadAvailablePeriods();
+    }, []);
+
+
+// Available years
+const years = Array.from(
+    new Set(availablePeriods.map((period) => period.year)),
+).sort((a, b) => a - b);
+
+
+// Available months for selected year
+const availableMonths = availablePeriods
+    .filter((period) => period.year === displayedYear)
+    .map((period) => period.month)
+    .sort((a, b) => a - b);
+
+
+// Convert month numbers to selector options
+const months = availableMonths.map((month) => ({
+    value: month,
+    label: new Date(2000, month - 1, 1).toLocaleString(
+        "en-US",
+        {
+            month: "long",
+        },
+    ),
+}));
+
+// Change year
+const handleYearChange = (year: number) => {
+    setDisplayedYear(year);
+
+    const monthsForYear = availablePeriods
+        .filter((period) => period.year === year)
+        .map((period) => period.month)
+        .sort((a, b) => a - b);
+
+    if (
+        displayedMonth === null ||
+        !monthsForYear.includes(displayedMonth)
+    ) {
+        setDisplayedMonth(
+            monthsForYear[monthsForYear.length - 1]
+        );
+    }
+};
 
     // --------------------------------------------------
     // Load production data
     // --------------------------------------------------
 
-    useEffect(() => {
+useEffect(() => {
+    if (
+        displayedMonth === null ||
+        displayedYear === null
+    ) {
+        return;
+    }
 
-        async function loadMonth() {
+    async function loadMonth() {
+        setLoading(true);
+        setError(null);
 
-            setLoading(true);
-            setError(null);
+        // Clear the previous month's data immediately.
+        setProductionMonth(null);
+        setSelectedSegmentId(null);
 
-            // Clear the previous month's data immediately.
+        try {
+            const data = await getProductionMonth(
+                displayedMonth,
+                displayedYear,
+            );
+
+            setProductionMonth(data);
+
+        } catch (err) {
+            console.error(
+                "Failed to load production data:",
+                err,
+            );
+
             setProductionMonth(null);
             setSelectedSegmentId(null);
 
-            try {
+            setError(
+                "Failed to load production data.",
+            );
 
-                const data = await getProductionMonth(
-                    displayedMonth,
-                    displayedYear,
-                );
-
-                setProductionMonth(data);
-
-            } catch (err) {
-
-                console.error(
-                    "Failed to load production data:",
-                    err,
-                );
-
-                setProductionMonth(null);
-                setSelectedSegmentId(null);
-
-                setError(
-                    "Failed to load production data.",
-                );
-
-            } finally {
-
-                setLoading(false);
-
-            }
+        } finally {
+            setLoading(false);
         }
+    }
 
-        loadMonth();
+    loadMonth();
 
-    }, [displayedMonth, displayedYear]);
+}, [displayedMonth, displayedYear]);
 
 
     // --------------------------------------------------
@@ -200,9 +261,12 @@ export default function Dashboard() {
 
 const [statistics, setStatistics] =
     useState<ProductionStatistics | null>(null);
-
 useEffect(() => {
-    if (!selectedSegmentId) {
+    if (
+        !selectedSegmentId ||
+        displayedMonth === null ||
+        displayedYear === null
+    ) {
         setStatistics(null);
         return;
     }
@@ -225,6 +289,7 @@ useEffect(() => {
                 "Failed to load production statistics:",
                 error,
             );
+
             setStatistics(null);
         }
     }
@@ -278,10 +343,47 @@ useEffect(() => {
         );
     }
 
+if (!loadingPeriods && availablePeriods.length === 0) {
+    return (
+        <Box
+            sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            <Typography variant="body1">
+                No production data available.
+            </Typography>
+        </Box>
+    );
+}
+if (
+    displayedMonth === null ||
+    displayedYear === null
+) {
+    return (
+        <Box
+            sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            <Typography variant="body1">
+                Loading production period...
+            </Typography>
+        </Box>
+    );
+}
 
-    // --------------------------------------------------
-    // UI
-    // --------------------------------------------------
+// --------------------------------------------------
+// UI
+// --------------------------------------------------
 
 return (
     <Box sx={{ p: 1.5 }}>
@@ -307,7 +409,7 @@ return (
                     select
                     size="small"
                     label="Month"
-                    value={displayedMonth}
+                    value={displayedMonth ?? ""}
                     onChange={(event) => {
                         setDisplayedMonth(
                             Number(event.target.value),
@@ -330,11 +432,9 @@ return (
                     size="small"
                     label="Year"
                     value={displayedYear}
-                    onChange={(event) => {
-                        setDisplayedYear(
-                            Number(event.target.value),
-                        );
-                    }}
+                    onChange={(event) =>
+                        handleYearChange(Number(event.target.value))
+                    }
                     sx={{ minWidth: 120 }}
                 >
                     {years.map((year) => (
@@ -356,29 +456,77 @@ return (
                     gap: 1,
                 }}
             >
-                <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => generatePdfReport(displayedMonth, displayedYear)}
-                >
-                    PDF Report
-                </Button>
+            <Button
+                variant="outlined"
+                size="small"
+                disabled={
+                    displayedMonth === null ||
+                    displayedYear === null
+                }
+                onClick={() => {
+                    if (
+                        displayedMonth === null ||
+                        displayedYear === null
+                    ) {
+                        return;
+                    }
 
-                <Button
-                    variant="contained"
-                    size="small"
-                    onClick={() => generateExcelReport(displayedMonth, displayedYear)}
-                >
-                    Excel Report
-                </Button>
+                    generatePdfReport(
+                        displayedMonth,
+                        displayedYear,
+                    );
+                }}
+            >
+                PDF Report
+            </Button>
 
-                <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => downloadCsvExport(displayedMonth, displayedYear)}
-                >
-                    CSV Export
-                </Button>
+            <Button
+                variant="contained"
+                size="small"
+                disabled={
+                    displayedMonth === null ||
+                    displayedYear === null
+                }
+                onClick={() => {
+                    if (
+                        displayedMonth === null ||
+                        displayedYear === null
+                    ) {
+                        return;
+                    }
+
+                    generateExcelReport(
+                        displayedMonth,
+                        displayedYear,
+                    );
+                }}
+            >
+                Excel Report
+            </Button>
+
+            <Button
+                variant="outlined"
+                size="small"
+                disabled={
+                    displayedMonth === null ||
+                    displayedYear === null
+                }
+                onClick={() => {
+                    if (
+                        displayedMonth === null ||
+                        displayedYear === null
+                    ) {
+                        return;
+                    }
+
+                    downloadCsvExport(
+                        displayedMonth,
+                        displayedYear,
+                    );
+                }}
+            >
+                CSV Export
+            </Button>
             </Box>
         </Box>
         {error && (
@@ -402,7 +550,7 @@ return (
 
 <Panels.Group orientation="horizontal" autoSaveId="production-dashboard-layout">
 
-<Panels.Item defaultSize={70} minSize={55} surface>
+<Panels.Item defaultSize="70%" minSize="55%" maxSize="75%" surface>
     <Stack
         spacing={0}
         sx={{ height: "100%" }}
@@ -523,7 +671,7 @@ return (
 
                 <Panels.Separator disableDrag />
 
-                <Panels.Item defaultSize="30%" minSize="25%" surface>
+                <Panels.Item defaultSize="30%" minSize="25%" maxSize="35%" surface>
                     <Stack
                         spacing={0}
                         sx={{ height: "100%" }}
