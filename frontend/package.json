@@ -19,10 +19,14 @@
     "@mui/system": "^7.3.7",
     "@mui/x-charts-pro": "^9.10.1",
     "dayjs": "^1.11.21",
+    "i18next": "^26.4.2",
+    "immer": "^11.1.18",
+    "notistack": "^3.0.2",
     "papaparse": "^5.5.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.15",
+    "zustand-sync-tabs": "^0.2.3"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",

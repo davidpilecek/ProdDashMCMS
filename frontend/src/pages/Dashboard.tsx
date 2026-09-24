@@ -140,7 +140,6 @@ const handleYearChange = (year: number) => {
     // --------------------------------------------------
     // Load production data
     // --------------------------------------------------
-
 useEffect(() => {
     if (
         displayedMonth === null ||
@@ -149,18 +148,21 @@ useEffect(() => {
         return;
     }
 
+    // TypeScript now knows these are definitely numbers
+    const month = displayedMonth;
+    const year = displayedYear;
+
     async function loadMonth() {
         setLoading(true);
         setError(null);
 
-        // Clear the previous month's data immediately.
         setProductionMonth(null);
         setSelectedSegmentId(null);
 
         try {
             const data = await getProductionMonth(
-                displayedMonth,
-                displayedYear,
+                month,
+                year,
             );
 
             setProductionMonth(data);
@@ -271,16 +273,17 @@ useEffect(() => {
         return;
     }
 
+    const month = displayedMonth;
+    const year = displayedYear;
     const segmentId = selectedSegmentId;
 
     async function loadStatistics() {
         try {
-            const data =
-                await getProductionStatistics(
-                    displayedMonth,
-                    displayedYear,
-                    segmentId,
-                );
+            const data = await getProductionStatistics(
+                month,
+                year,
+                segmentId,
+            );
 
             setStatistics(data);
 
@@ -550,7 +553,11 @@ return (
 
 <Panels.Group orientation="horizontal" autoSaveId="production-dashboard-layout">
 
-<Panels.Item defaultSize="70%" minSize="55%" maxSize="75%" surface>
+<Panels.Item
+    defaultSize="70%"
+    minSize="55%"
+    surface
+>
     <Stack
         spacing={0}
         sx={{ height: "100%" }}
